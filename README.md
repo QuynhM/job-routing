@@ -1,70 +1,88 @@
-# Getting Started with Create React App
+# React Hook Form
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 1. React Router v6
 
-## Available Scripts
+### Turn single-page to multi-page application
 
-In the project directory, you can run:
+[Documentation](https://reactrouter.com/en/main)
 
-### `npm start`
+`npm install react-router-dom@6`
+In `index.js`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```
+import {BrowserRouter} from "react-router-dom"
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+ReactDom.render(
+<BrowserRouter>
+<App/>
+</BrowserRouter>
+);
+```
 
-### `npm test`
+**Routing pages** use <Routes>. (This goes in `index.js`). Has `path` attribute, can either be the static path or dynamic (i.e. `:invoiceId` dynamic segment). `element`: what going to be rendered.
+**Layout (sharing)** Use `<Outlet>`
+**Hyperlink** Use `Link` or `NavLink`. This has `to` attribute
+**useParams** method to get the id of clickable item (similar to ctx.triggered\*id in Python)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+_Note:_ Route is nested.
 
-### `npm run build`
+**useSearchParams:** React Hook. Use to make search filter in input. Can put this directly on html atribute `onChange`
+**useLocation:** A hook that can return a dictionary that has your current url and separate them in to different children.
+**useNavigate** A hook use (on onChange) to automatically change route on event. Ex:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```javascript
+navigate = useNavigate();
+<Card onClick={() => navigate(`/book/${book.id}`)} />;
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**Summary** To make multi-page you need to first
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Use Browser Router to wrap around the application in `index.js`.
+2. Define the `path` for each Route using <Routes> and define the event when click using `element` attributes.
+3. Routing can also be done using `Link` or `Navlink`
+4. Other: useParams, searchParams, useLocation
 
-### `npm run eject`
+## 2. React Router - Main Concepts
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**Vocab:**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- Search param: anything after ? in route
+- Location: browser object represent the url
+- Location state: states inside location object.
+- History Stack: locations in a stack (Pop, push, replace)
+- Segment (url params): path pattern "/user/123" has 2 _segments_
+- Router: top-level component, relative with parents.
+- Outlet: A component that renders the next match in a set of matches
+- Index Route: A child route with no path that renders in the parent's outlet at the parents URL. `<Route index element = ... \> `
+- Route config: route matching order, usually represent as a tree
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 3. [Material UI v5](https://mui.com)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+**Installation**
+`npm install @mui/material @emotion/react @emotion/styled`
 
-## Learn More
+```javascript
+import {Button}
+ from "@mui/material"
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+ <Button variant = "contained> Click me <\Button>
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+App Bar (Nav bar),
+**Note:**: Structure:
 
-### Code Splitting
+- src > components > SearchAppBar.js for all components
+- src > pages > DetailPage.js for all pages
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+**Grid:** Flex box container. Use xs, md, lg for responsive.
 
-### Analyzing the Bundle Size
+**sx**: A dict element of Material UI to quickly style (Use like `style`). Ex: mt = margin-top.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+**Note**: Dont forget `key` whenever using loop. This will help when want to get id of clicked button (Using `useParams`)
 
-### Making a Progressive Web App
+**Other components**: Typography (h1-h5), Box (similar to container), QuiltedImageList (Collage), Icon (Similar to Iconify)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+**Theme:** Similar to manipulate root in CSS
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- createTheme: a dict object to pass in `theme` element in ThemeProvider. Use to change theme
+- ThemeProvider: wrap around the app
