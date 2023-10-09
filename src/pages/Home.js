@@ -5,6 +5,7 @@ import Container from "@mui/material/Container";
 import Pagination from "@mui/material/Pagination";
 import data from "../data/data.json";
 import { styled } from "@mui/material/styles";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 const PaginationStyle = styled(Pagination)(() => ({
   color: "white",
@@ -12,23 +13,45 @@ const PaginationStyle = styled(Pagination)(() => ({
   justifyContent: "center",
   display: "flex",
 }));
+
+// A custom hook that builds on useLocation to parse
+
+// the query string for you.
+
+function useQuery() {
+  const { search } = useLocation();
+  console.log("Search:", search);
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
 function Home() {
   const jobsPerPage = 5;
   const totalPages = Math.ceil(data.length / jobsPerPage);
   const [jobs, setJobs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState(""); // New state for search
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  let query = useQuery();
 
   // Filter jobs based on search term
-  const filteredJobs = data.filter((job) =>
-    job.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   useEffect(() => {
+    const search = query.get("q");
+    console.log(query);
+    console.log("GET: ", searchParams.get("q"));
+
+    let filteredJobs = data;
+    if (search) {
+      filteredJobs = filteredJobs.filter((job) =>
+        job.title.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
     const start = (currentPage - 1) * jobsPerPage;
     const end = start + jobsPerPage;
     setJobs(filteredJobs.slice(start, end));
-  }, [currentPage, filteredJobs]);
+  }, [currentPage, query]);
 
   return (
     <Container sx={{ p: 3 }} maxWidth="lg">
