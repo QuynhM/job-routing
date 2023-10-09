@@ -1,4 +1,4 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/77d74690-74f2-4763-9754-4577b66f980b/deploy-status)](https://app.netlify.com/sites/quynh-job-routing/deploys)
+(https://quynh-job-routing.netlify.app/)
 
 
 ### Dark mode
