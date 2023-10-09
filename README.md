@@ -2,8 +2,8 @@ https://quynh-job-routing.netlify.app
 
 **bold text** Dark Mode
 
-![dark mode](/1.png)
+![dark mode](/images/1.png)
 
 **bold text** Light Mode
 
-![light mode](/2.png)
+![light mode](/images/2.png)
